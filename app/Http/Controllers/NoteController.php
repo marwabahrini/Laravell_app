@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Note;
 
+use App\Note;
 use Illuminate\Http\Request;
 
 class NoteController extends Controller
@@ -36,56 +36,69 @@ class NoteController extends Controller
      */
     public function store(Request $request)
     {
-       $request->validate([
-           'title' => 'required', 
-           'description' => 'required'
-       ]);
-       return 123;
-
+        $request->validate([
+            'title' => 'required', 
+            'description' => 'required'
+        ]);
+        Note::create($request->all());
+   
+        return redirect()->route('note.index')
+                        ->with('success','Note created successfully.');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Note $note)
     {
-        return view('note.show')->with('note' , Note::where('id' , $id)->first());
+        return view('note.show',compact('note'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Note $note)
     {
-        return view('note.edit')->with('note' , Note::where('id' , $id)->first());
+        return view('note.edit',compact('note'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Note $note)
     {
-        //
+        $request->validate([
+            'title' => 'required', 
+            'description' => 'required'
+        ]);
+  
+        $note->update($request->all());
+  
+        return redirect()->route('note.index')
+                        ->with('success','Note updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function delete($id)
+    public function destroy(Note $note)
     {
-      return "delete";
+        $note->delete();
+  
+        return redirect()->route('note.index')
+                        ->with('success','Note deleted successfully');
     }
 }

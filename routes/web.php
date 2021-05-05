@@ -19,11 +19,10 @@ use App\Http\Controllers\PageController;
 // });
 
 Route::get('/', 'PageController@index');
-Route::resource('/note' , NoteController::class);
+Route::resource('note','NoteController');
 Route::get('/notes', 'NoteController@index');
-Route::get('note/create','NoteController@create');
-Route::get('note/{id}','NoteController@show');
-Route::delete('note/{id}', [NoteController::class, 'delete' ]);
+// Route::get('note/{id}','NoteController@show');
+// Route::delete('note/{id}', [NoteController::class, 'delete' ]);
 
 Auth::routes();
 
